@@ -38,11 +38,15 @@ public class Weather {
             System.out.println(response.getStatusLine());
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
-            InputStream myStream = entity.getContent();
+            //InputStream myStream = entity.getContent();
             System.out.println(headers);
-            System.out.println(myStream);
+            //System.out.println(myStream);
+            if (entity != null) {
+                // return it as a String
+                String result = EntityUtils.toString(entity);
+                System.out.println(result);
+            }
             consume(entity);
-
         } catch (ClientProtocolException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
