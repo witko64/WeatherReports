@@ -1,5 +1,4 @@
 package org.WeatherReports;
-//import java.util;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -22,7 +21,9 @@ public class Meteo {
         Scanner scanner = new Scanner(System.in);
         String cmd;
         String line;
-        Weather currentWeather = new Weather("Poznan", 45,17 );
+        MeteoConfig meteoConfig = new MeteoConfig();
+        meteoConfig.ReadMeteoConfig();
+        Weather currentWeather = new Weather("Poznan", 16.93,52.41);
         while (goOn) {
             System.out.println("P-podaj miasto, Z-zakończ");
             cmd = scanner.nextLine();
@@ -36,8 +37,7 @@ public class Meteo {
                     System.out.println("Podaj nazwę miasta");
                     line = scanner.nextLine();
                     System.out.println(line);
-                    String appID = MeteoConfig.getAppId();
-                    currentWeather.getWeather(appID); //Tu ma być token, parametr main()
+                    currentWeather.getWeather(meteoConfig.appID, meteoConfig.restURL ); //Tu ma być token, parametr main()
                     currentWeather.getWeatherReport();
                     currentWeather.createPDF();
                     currentWeather.createXML();
@@ -45,8 +45,6 @@ public class Meteo {
                 }
             }
         }
-
         System.out.println("Dzięki do zobaczenia");
-
     }
 }

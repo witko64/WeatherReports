@@ -16,21 +16,20 @@ import static org.apache.http.util.EntityUtils.*;
 
 public class Weather {
     String Name;
-    float latitude;
-    float longitude;
-    float temperature;
-    float windSpeed;
+    double longitude;
+    double latitude;
+    double temperature;
+    double windSpeed;
     int windDirection;
 
-    public Weather(String name, float latitude, float longitude) {
+    public Weather(String name, double longitude, double latitude) {
         Name = name;
-        this.latitude = latitude;
         this.longitude = longitude;
+        this.latitude = latitude;
     }
 
-    public void getWeather(String token) throws IOException {
-        String restPATH = "https://api.openweathermap.org/data/2.5/weather?";
-        String restCMD = restPATH + "lat=54.52&lon=18.55&units=metric&lang=pl&appid="+token; //appid token przekazywany jako prametr main()
+    public void getWeather(String token, String restURL) throws IOException {
+        String restCMD = restURL + "lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&units=metric&lang=pl&appid=" + token;
         System.out.println(restCMD);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(restCMD);
