@@ -35,7 +35,8 @@ public class Meteo {
                     System.out.println("Podaj nazwę miasta");
                     line = scanner.nextLine();
                     System.out.println(line);
-                    currentWeather.getWeather(args[0]); //Tu ma być token, parametr main()
+                    String appID = MeteoConfig.getAppId();
+                    currentWeather.getWeather(appID); //Tu ma być token, parametr main()
                     currentWeather.getWeatherReport();
                     currentWeather.createPDF();
                     currentWeather.createXML();
