@@ -2,6 +2,7 @@ package org.WeatherReports;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -9,6 +10,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+
+import static org.apache.http.util.EntityUtils.*;
 
 public class Weather {
     String Name;
@@ -24,19 +27,21 @@ public class Weather {
         this.longitude = longitude;
     }
 
-    public void getWeather() throws IOException {
+    public void getWeather(String token) throws IOException {
         String restPATH = "https://api.openweathermap.org/data/2.5/weather?";
-        String restCMD = restPATH + "lat=54.52&lon=18.55&units=metric&lang=pl&&appid=1dc17e8ab126fde44f63fa0f671b141d";
+        String restCMD = restPATH + token + "lat=54.52&lon=18.55&units=metric&lang=pl&appid="; //appid token przekazywany jako prametr main()
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(restCMD);
-        try (CloseableHttpResponse response = httpClient.execute(httpGet)){
+        HttpGet request = new HttpGet(restCMD);
+        try (CloseableHttpResponse response = httpClient.execute(request)){
             System.out.println(response.getStatusLine());
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
             System.out.println(headers);
-            EntityUtils.consume(entity);
-        } finally {
-            response.close();
+            consume(entity);
+        } catch (ClientProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
