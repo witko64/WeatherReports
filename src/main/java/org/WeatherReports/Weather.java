@@ -10,6 +10,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.apache.http.util.EntityUtils.*;
 
@@ -29,15 +30,19 @@ public class Weather {
 
     public void getWeather(String token) throws IOException {
         String restPATH = "https://api.openweathermap.org/data/2.5/weather?";
-        String restCMD = restPATH + token + "lat=54.52&lon=18.55&units=metric&lang=pl&appid="; //appid token przekazywany jako prametr main()
+        String restCMD = restPATH + "lat=54.52&lon=18.55&units=metric&lang=pl&appid="+token; //appid token przekazywany jako prametr main()
+        System.out.println(restCMD);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(restCMD);
         try (CloseableHttpResponse response = httpClient.execute(request)){
             System.out.println(response.getStatusLine());
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
+            InputStream myStream = entity.getContent();
             System.out.println(headers);
+            System.out.println(myStream);
             consume(entity);
+
         } catch (ClientProtocolException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

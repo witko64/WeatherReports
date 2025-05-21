@@ -1,6 +1,7 @@
 package org.WeatherReports;
 //import java.util;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -9,7 +10,7 @@ public class Meteo {
 
     protected static String PATH_TO_JSON = "c:\\cities.json";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //  Variables
 //      Cities cities = new Cities();
 //      cities.loadCities(PATH_TO_JSON); //load cities database from json file
