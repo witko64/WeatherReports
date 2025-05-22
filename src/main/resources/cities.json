@@ -1,8 +1,1 @@
-{{"name": "Gdynia", "coord":{"lon":18.55,"lat":54.52}},
-{"name": "Pleszew","coord":{"lon":17.79,"lat":51.90}},
-{"name": "Poznan","coord":{"lon":16.93,"lat":52.41}},
-{"name": "Puck","coord":{"lon":18.42,"lat":54.72}},
-{"name": "Gizycko","coord":{"lon":21.77,"lat":54.03}},
-{"name": "Powidz","coord":{"lon":17.92,"lat":52.41}},
-{"name": "Wolin", "coord": {"lon": 14.61, "lat": 53.84}},
-{"name": "Lesko", "coord": {"lon": 22.33, "lat": 49.48}}}
+[{"name": "Gdynia", "coord":{"lon":18.55,"lat":54.52}},{"name": "Pleszew","coord":{"lon":17.79,"lat":51.90}},{"name": "Poznan","coord":{"lon":16.93,"lat":52.41}},{"name": "Puck","coord":{"lon":18.42,"lat":54.72}},{"name": "Gizycko","coord":{"lon":21.77,"lat":54.03}},{"name": "Powidz","coord":{"lon":17.92,"lat":52.41}},{"name": "Wolin", "coord": {"lon": 14.61, "lat": 53.84}},{"name": "Lesko", "coord": {"lon": 22.33, "lat": 49.48}}]

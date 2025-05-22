@@ -11,27 +11,22 @@ public class TestObjectMaper {
     public static void main(String[] args) {
         String json = "{\"name\": \"Gdynia\", \"coord\":{\"lon\":18.55,\"lat\":54.52}}";
         String json1 = "";
+
         ObjectMapper om = new ObjectMapper();
-
-        City city1 = new City("Poznan");
-
+        City city = new City();
         try {
-            //om.writeValue(json1, city1);
-            om.writeValue(new File("target/city.json"), city1);
-        } catch (IOException e) {
+            // covert JSON to Java object
+            city = om.readValue(json, City.class);
+            System.out.println(city.name+city.coord);
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
+        City city1 = city;
         try {
-            City city = new City();
-
-            // covert JSON to Java object
-            city = om.readValue(json, City.class);
-
-            // output: Person{name='mkyong', age=20}
-            System.out.println(city);
-
-        } catch (JsonProcessingException e) {
+            // convert Java object to JSON
+            om.writeValue(new File("target/city1.json"), city1);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

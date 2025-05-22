@@ -29,15 +29,15 @@ public class City {
         this.coord = new Coord();
     }
 
-    public City(String name) {
-        this.name = name;
-        this.coord = new Coord();
-    }
+   // public City(String name) {
+     //   this.name = name;
+       // this.coord = new Coord();
+    //}
 
-    public City(String name, Coord coord) {
-        this.name = name;
-        this.coord = coord;
-    }
+    //public City(String name, Coord coord) {
+      //  this.name = name;
+        //this.coord = coord;
+    //}
 
     public class Coord {
         public double getLon() {
@@ -63,10 +63,10 @@ public class City {
             this.lon = 0.0;
             this.lat = 0.0;
         }
-        public Coord(double latitude, double lon) {
-            this.lon = lon;
-            this.lat = lat;
-        }
+        //public Coord(double latitude, double lon) {
+          //  this.lon = lon;
+            //this.lat = lat;
+        //}
     }
 
 

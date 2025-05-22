@@ -14,7 +14,7 @@ public class MeteoConfig {
 
     public void ReadMeteoConfig() {
         try {
-            myConfig = new File("C:\\Users\\Witek\\IdeaProjects\\WeatherReports\\src\\main\\resources\\meteo.conf");
+            myConfig = new File("meteo.conf");
             myReader = new Scanner(myConfig);
             if (myReader.hasNextLine()) {
                 restURL = myReader.nextLine();
