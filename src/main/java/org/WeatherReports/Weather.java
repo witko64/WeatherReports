@@ -21,30 +21,25 @@ public class Weather {
     double temperature;
     double windSpeed;
     int windDirection;
-
+    String weatherJsonString;
     public Weather(String name, double longitude, double latitude) {
         Name = name;
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public void getWeather(String token, String restURL) throws IOException {
-        String restCMD = restURL + "lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&units=metric&lang=pl&appid=" + token;
-        System.out.println(restCMD);
+    public Weather() {
+    }
+
+    public void getWeather() throws IOException {
+        String restCMD = MeteoConfig.restURL + "lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(restCMD);
         try (CloseableHttpResponse response = httpClient.execute(request)){
-            System.out.println(response.getStatusLine());
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
-            //InputStream myStream = entity.getContent();
-            System.out.println(headers);
-            //System.out.println(myStream);
-            if (entity != null) {
-                // return it as a String
-                String result = EntityUtils.toString(entity);
-                System.out.println(result);
-            }
+            InputStream myStream = entity.getContent();
+            weatherJsonString = EntityUtils.toString(entity);     // return it as a String
             consume(entity);
         } catch (ClientProtocolException e) {
             throw new RuntimeException(e);

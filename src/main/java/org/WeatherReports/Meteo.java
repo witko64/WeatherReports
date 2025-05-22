@@ -7,7 +7,7 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Meteo {
 
-    protected static String PATH_TO_JSON = "c:\\cities.json";
+//    protected static String PATH_TO_JSON = "c:\\cities.json";
 
     public static void main(String[] args) throws IOException {
 //  Variables
@@ -22,7 +22,6 @@ public class Meteo {
         String cmd;
         String line;
         MeteoConfig meteoConfig = new MeteoConfig();
-        meteoConfig.ReadMeteoConfig();
         Weather currentWeather = new Weather("Poznan", 16.93,52.41);
         while (goOn) {
             System.out.println("P-podaj miasto, Z-zakończ");

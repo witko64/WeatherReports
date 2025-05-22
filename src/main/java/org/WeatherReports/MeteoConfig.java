@@ -5,30 +5,40 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MeteoConfig {
+// Global parameters
+    public static String appID;
+    public static String restURL;
+    public static String defaultPath;
+    public static String defaultLang;
+    public static String defaultUnits;
+
 
     static File myConfig;
     static Scanner myReader;
-    public static String appID;
-    public static String restURL;
-    public static String path;
+
+    public MeteoConfig() {
+        ReadMeteoConfig();
+    }
 
     public void ReadMeteoConfig() {
         try {
-            myConfig = new File("meteo.conf");
+            myConfig = new File("C:\\Users\\Witek\\IdeaProjects\\WeatherReports\\src\\main\\resources\\meteo.conf"); //target ??
             myReader = new Scanner(myConfig);
             if (myReader.hasNextLine()) {
                 restURL = myReader.nextLine();
-                System.out.println(restURL);
             }
             if (myReader.hasNextLine()) {
                 appID = myReader.nextLine();
-                System.out.println(appID);
             }
             if (myReader.hasNextLine()) {
-                path = myReader.nextLine();
-                System.out.println(path);
+                defaultPath = myReader.nextLine();
             }
-        }
+            if (myReader.hasNextLine()) {
+                defaultLang = myReader.nextLine();
+            }
+            if (myReader.hasNextLine()) {
+                defaultUnits = myReader.nextLine();
+            }}
         catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
