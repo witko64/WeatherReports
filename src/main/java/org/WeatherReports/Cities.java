@@ -28,7 +28,6 @@ public class Cities {
             myReader = new Scanner(myJsonFile);
             if (myReader.hasNextLine()) {
                 jsonString = myReader.nextLine();
-                System.out.println(jsonString);
             }
         }
         catch (FileNotFoundException e) {
@@ -39,12 +38,6 @@ public class Cities {
         try {
             // covert JSON table file to list Java object
             cityList = om.readValue(jsonString, new TypeReference<List<City>>(){});
-
-            Iterator<City> cityIterator = cityList.iterator();
-            while (cityIterator.hasNext()) {
-                city = cityIterator.next();
-                System.out.println(city.name);
-            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -57,13 +50,18 @@ public class Cities {
                 break;
             }
         }
+        if (!Objects.equals(city.name.toUpperCase(), myCity.toUpperCase())) {
+            city = null;
+            System.out.println("Nie ma takiego miasta");
+        }
         return city;
     }
 
     public void printCities() {
         for (City value : cityList) {
             city = value;
+            System.out.print(city.name+" ");
         }
+        System.out.println(" ");
     }
-
 }

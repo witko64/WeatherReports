@@ -13,18 +13,13 @@ public class Meteo {
 //  Variables
         Cities cities = new Cities();
         City city = new City();
-
-//      cities.loadCities(PATH_TO_JSON); //load cities database from json file
-//      City myCity;
-//      SimpleMenu myMenu = new SimpleMenu();
-//      String menuItem;
-//
         boolean goOn = true;
         Scanner scanner = new Scanner(System.in);
         String cmd;
         String myCity;
         MeteoConfig meteoConfig = new MeteoConfig();
         Weather currentWeather = new Weather();
+
         while (goOn) {
             System.out.println("P-podaj miasto, Z-zakończ");
             cmd = scanner.nextLine();
@@ -39,7 +34,7 @@ public class Meteo {
                     System.out.println(myCity);
                     city = cities.getCity(myCity);
                     currentWeather.getWeather(city);
-                    currentWeather.getWeatherReport();
+                    currentWeather.createWeatherReport();
                     currentWeather.createPDF();
                     currentWeather.createXML();
                     currentWeather.createJSON();

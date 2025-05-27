@@ -20,46 +20,40 @@ import java.util.List;
 import static org.apache.http.util.EntityUtils.*;
 
 public class Weather {
-    String Name;
-    double longitude;
-    double latitude;
-    double temperature;
-    double windSpeed;
-    int windDirection;
-    String weatherJsonString;
 
     public Weather() {
     }
 
     public void getWeather(City city) throws IOException {
+
         String restCMD = MeteoConfig.restURL + "lat=" + Double.toString(city.coord.lat) + "&lon=" + Double.toString(city.coord.lon) + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(restCMD);
+
         try (CloseableHttpResponse response = httpClient.execute(request)){
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
             InputStream myStream = entity.getContent();
-            weatherJsonString = EntityUtils.toString(entity);     // return it as a String
+            String weatherJsonString = EntityUtils.toString(entity);     // return it as a String
             consume(entity);
 
             ObjectMapper om = new ObjectMapper();
             try {
                 // covert JSON string to list Java object
-                weather1 = om.readValue(weatherJsonString, new TypeReference<Weather>(){});
+                System.out.println(weatherJsonString);
+                System.out.println("========= Poki co tylko strig ====== sypie się na konwersji json -> object");
+                CurrentWeather currentWeather = om.readValue(weatherJsonString, new TypeReference<CurrentWeather>(){});
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-
-        } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void getWeatherReport() {
+    public void createWeatherReport() {
         System.out.println("getWeatherReport");
-        System.out.println(this.Name);
     }
     public void createPDF() {
         System.out.println("createPDF");
