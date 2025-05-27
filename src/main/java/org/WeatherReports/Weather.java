@@ -1,5 +1,8 @@
 package org.WeatherReports;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -11,6 +14,8 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.apache.http.util.EntityUtils.*;
 
@@ -22,17 +27,12 @@ public class Weather {
     double windSpeed;
     int windDirection;
     String weatherJsonString;
-    public Weather(String name, double longitude, double latitude) {
-        Name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
 
     public Weather() {
     }
 
-    public void getWeather() throws IOException {
-        String restCMD = MeteoConfig.restURL + "lat=" + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
+    public void getWeather(City city) throws IOException {
+        String restCMD = MeteoConfig.restURL + "lat=" + Double.toString(city.coord.lat) + "&lon=" + Double.toString(city.coord.lon) + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(restCMD);
         try (CloseableHttpResponse response = httpClient.execute(request)){
@@ -41,6 +41,15 @@ public class Weather {
             InputStream myStream = entity.getContent();
             weatherJsonString = EntityUtils.toString(entity);     // return it as a String
             consume(entity);
+
+            ObjectMapper om = new ObjectMapper();
+            try {
+                // covert JSON string to list Java object
+                weather1 = om.readValue(weatherJsonString, new TypeReference<Weather>(){});
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
         } catch (ClientProtocolException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -50,6 +59,7 @@ public class Weather {
 
     public void getWeatherReport() {
         System.out.println("getWeatherReport");
+        System.out.println(this.Name);
     }
     public void createPDF() {
         System.out.println("createPDF");

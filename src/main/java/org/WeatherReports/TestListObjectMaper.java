@@ -18,7 +18,6 @@ public class TestListObjectMaper {
     static City city;
 
     public static void main(String[] args) {
-
         try {
             myJsonFile = new File(jsonPath+"cities.json");
             myReader = new Scanner(myJsonFile);

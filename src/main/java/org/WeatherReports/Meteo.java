@@ -11,7 +11,9 @@ public class Meteo {
 
     public static void main(String[] args) throws IOException {
 //  Variables
-//      Cities cities = new Cities();
+        Cities cities = new Cities();
+        City city = new City();
+
 //      cities.loadCities(PATH_TO_JSON); //load cities database from json file
 //      City myCity;
 //      SimpleMenu myMenu = new SimpleMenu();
@@ -20,23 +22,23 @@ public class Meteo {
         boolean goOn = true;
         Scanner scanner = new Scanner(System.in);
         String cmd;
-        String line;
+        String myCity;
         MeteoConfig meteoConfig = new MeteoConfig();
-        Weather currentWeather = new Weather("Poznan", 16.93,52.41);
+        Weather currentWeather = new Weather();
         while (goOn) {
             System.out.println("P-podaj miasto, Z-zakończ");
             cmd = scanner.nextLine();
-            if (cmd.length() != 0) {
+            if (!cmd.isEmpty()) {
                 if (cmd.charAt(0) == 'Z' || cmd.charAt(0) == 'z') {
                     goOn = false;
                 }
                 else if (cmd.charAt(0) == 'P' || cmd.charAt(0) == 'p') {
-//                  myCity = cities.getCity(menuItem);
-//                  menuItem = myMenu.getMenuItem();
+                    cities.printCities();
                     System.out.println("Podaj nazwę miasta");
-                    line = scanner.nextLine();
-                    System.out.println(line);
-                    currentWeather.getWeather(meteoConfig.appID, meteoConfig.restURL ); //Tu ma być token, parametr main()
+                    myCity = scanner.nextLine();
+                    System.out.println(myCity);
+                    city = cities.getCity(myCity);
+                    currentWeather.getWeather(city);
                     currentWeather.getWeatherReport();
                     currentWeather.createPDF();
                     currentWeather.createXML();

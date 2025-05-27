@@ -1,46 +1,68 @@
-// Klasa Cities: zbiór miast - "baza danych miast dla których będziemy wyszukiwac prognozę pogody.
-// Zbiór miast to może być lista albo HashMap (wydorbać optymalną strukturę)
-// package org.WeatherReports;
+// Klasa Cities: lista miast - "baza danych miast dla których będziemy wyszukiwac prognozę pogody.
+
 package org.WeatherReports;
 //import java.lang;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.HashMap;
 
-// import City.java;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Iterator;
+
 
 public class Cities {
-
+    static File myJsonFile;
+    static Scanner myReader;
+    static String jsonPath = "C:\\Users\\Witek\\IdeaProjects\\WeatherReports\\src\\main\\resources\\";
+    static String jsonString = "";
     City city;
-    HashMap<String, City> cities = new HashMap<>();
+    List<City> cityList = null;
 
-    public void loadCities(String pathToJson) {
-        System.out.println("ladujemy jsona "+pathToJson);
-
-        String json = "{\"name\": \"mkyong\", \"age\": 20}";
-
+    public Cities() {
+        try {
+            myJsonFile = new File(jsonPath+"cities.json");
+            myReader = new Scanner(myJsonFile);
+            if (myReader.hasNextLine()) {
+                jsonString = myReader.nextLine();
+                System.out.println(jsonString);
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
         ObjectMapper om = new ObjectMapper();
         try {
+            // covert JSON table file to list Java object
+            cityList = om.readValue(jsonString, new TypeReference<List<City>>(){});
 
-            // covert JSON to Java object
-            Cities cities = om.readValue(json, Cities.class);
-
-            // output: Person{name='mkyong', age=20}
-            System.out.println(cities);
-
+            Iterator<City> cityIterator = cityList.iterator();
+            while (cityIterator.hasNext()) {
+                city = cityIterator.next();
+                System.out.println(city.name);
+            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public City getCity(String myCity) {
-        return cities.get(myCity);
+        for (City value : cityList) {
+            city = value;
+            if (Objects.equals(city.name.toUpperCase(), myCity.toUpperCase())) {
+                break;
+            }
+        }
+        return city;
     }
 
     public void printCities() {
-        for (String ct : cities.keySet()) {
-            System.out.println(ct);
+        for (City value : cityList) {
+            city = value;
         }
     }
 
