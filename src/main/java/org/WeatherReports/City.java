@@ -1,7 +1,5 @@
 // Klasa City: miasto dla którego będziemy wyszukiwac prognozę pogody, elementu zbioru Cities
 
-// package com.mkyong.json.jackson.tips;
-// import com.mkyong.json.model.Person;
 package org.WeatherReports;
 
 public class City {
@@ -28,14 +26,4 @@ public class City {
         this.name = "";
         this.coord = new Coord();
     }
-
-   // public City(String name) {
-     //   this.name = name;
-       // this.coord = new Coord();
-    //}
-
-    //public City(String name, Coord coord) {
-      //  this.name = name;
-        //this.coord = coord;
-    //}
 }
