@@ -18,7 +18,7 @@ public class Meteo {
         String cmd;
         String myCity;
         MeteoConfig meteoConfig = new MeteoConfig();
-        Weather currentWeather = new Weather();
+        Weather weather = new Weather();
 
         while (goOn) {
             System.out.println("P-podaj miasto, Z-zakończ");
@@ -33,11 +33,11 @@ public class Meteo {
                     myCity = scanner.nextLine();
                     System.out.println(myCity);
                     city = cities.getCity(myCity);
-                    currentWeather.getWeather(city);
-                    currentWeather.createWeatherReport();
-                    currentWeather.createPDF();
-                    currentWeather.createXML();
-                    currentWeather.createJSON();
+                    weather.getWeather(city);
+                    weather.createWeatherReport();
+                    weather.createPDF();
+                    weather.createXML();
+                    weather.createJSON();
                 }
             }
         }

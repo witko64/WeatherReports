@@ -3,6 +3,7 @@ package org.WeatherReports;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.internal.icu.text.UCharacterIterator;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -21,6 +22,9 @@ import static org.apache.http.util.EntityUtils.*;
 
 public class Weather {
 
+    CurrentWeather currentWeather;
+    String weatherJsonString = "";
+
     public Weather() {
     }
 
@@ -35,15 +39,14 @@ public class Weather {
             HttpEntity entity = response.getEntity();
             Header headers = entity.getContentType();
             InputStream myStream = entity.getContent();
-            String weatherJsonString = EntityUtils.toString(entity);     // return it as a String
+            weatherJsonString = EntityUtils.toString(entity);     // return it as a String
             consume(entity);
 
             ObjectMapper om = new ObjectMapper();
             try {
                 // covert JSON string to list Java object
-                System.out.println(weatherJsonString);
-                System.out.println("========= Poki co tylko strig ====== sypie się na konwersji json -> object");
-                CurrentWeather currentWeather = om.readValue(weatherJsonString, new TypeReference<CurrentWeather>(){});
+                System.out.println(weatherJsonString); //usunac
+                currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
@@ -54,9 +57,21 @@ public class Weather {
 
     public void createWeatherReport() {
         System.out.println("getWeatherReport");
+
+        System.out.println(currentWeather);
     }
-    public void createPDF() {
+    public void createPDF(String city) {
         System.out.println("createPDF");
+        Document document = new Document();
+
+        PdfWriter.getInstance(document, new FileOutputStream("Pogoda"+ city + ".pdf"));
+        document.open();
+        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+
+        chunk = new Chunk("Hello World", font);
+
+        document.add(chunk);
+        document.close();
     }
 
     public void createXML(){

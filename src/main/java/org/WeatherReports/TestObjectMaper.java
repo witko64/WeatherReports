@@ -26,6 +26,7 @@ public class TestObjectMaper {
         try {
             // convert Java object to JSON
             om.writeValue(new File("target/city1.json"), city1);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
