@@ -3,7 +3,7 @@ package org.WeatherReports;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.internal.icu.text.UCharacterIterator;
+//import jdk.internal.icu.text.UCharacterIterator;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -62,16 +62,6 @@ public class Weather {
     }
     public void createPDF(String city) {
         System.out.println("createPDF");
-        Document document = new Document();
-
-        PdfWriter.getInstance(document, new FileOutputStream("Pogoda"+ city + ".pdf"));
-        document.open();
-        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-
-        chunk = new Chunk("Hello World", font);
-
-        document.add(chunk);
-        document.close();
     }
 
     public void createXML(){

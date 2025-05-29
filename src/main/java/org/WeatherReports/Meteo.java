@@ -35,7 +35,7 @@ public class Meteo {
                     city = cities.getCity(myCity);
                     weather.getWeather(city);
                     weather.createWeatherReport();
-                    weather.createPDF();
+                    weather.createPDF(city.name);
                     weather.createXML();
                     weather.createJSON();
                 }
