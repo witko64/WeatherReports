@@ -9,16 +9,19 @@
       <option name="ignoredModules">
         <list>
           <option value="WeatherReports" />
+          <option value="WeatherReports" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="commons-codec:commons-codec:1.11" />
+          <option value="com.fasterxml.woodstox:woodstox-core:6.2.1" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
           <option value="Fixed in branch" />
+          <option value="Not exploitable" />
         </list>
       </option>
     </inspection_tool>

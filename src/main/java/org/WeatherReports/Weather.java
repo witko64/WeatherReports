@@ -2,6 +2,7 @@ package org.WeatherReports;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -10,6 +11,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -61,9 +64,21 @@ public class Weather {
     public void createPDF() {
         System.out.println("createPDF");
     }
-    public void createXML(){
+
+    public void createXML() throws JsonProcessingException {
         System.out.println("createXML");
+        XmlMapper xmlMapper = new XmlMapper();
+        String xml = xmlMapper.writeValueAsString(currentWeather);
+        System.out.println(xml);
+        try {
+            File xmlFile = new File(currentWeather.name + ".xml");
+            xmlMapper.writeValue(xmlFile, currentWeather);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+
     public void createJSON(){
         System.out.println("createJSON");
     }
