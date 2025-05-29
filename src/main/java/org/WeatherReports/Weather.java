@@ -1,11 +1,9 @@
 package org.WeatherReports;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -14,14 +12,13 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
 
 import static org.apache.http.util.EntityUtils.*;
 
 public class Weather {
 
     CurrentWeather currentWeather;
+
     String weatherJsonString = "";
 
     public Weather() {
@@ -44,7 +41,6 @@ public class Weather {
             ObjectMapper om = new ObjectMapper();
             try {
                 // covert JSON string to list Java object
-                System.out.println(weatherJsonString); //usunac
                 currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
@@ -54,15 +50,17 @@ public class Weather {
         }
     }
 
-    public void createWeatherReport() {
-        System.out.println("getWeatherReport");
-
-        System.out.println(currentWeather);
+    public void writeWeatherReport() {
+        System.out.println("");
+        System.out.println("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
+        System.out.println("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa");
+        System.out.println("Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C");
+        System.out.println("Wiatr z kierunku: " + currentWeather.wind.deg +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
+        System.out.println("Widzialność: " + currentWeather);
     }
-    public void createPDF(String city) {
+    public void createPDF() {
         System.out.println("createPDF");
     }
-
     public void createXML(){
         System.out.println("createXML");
     }

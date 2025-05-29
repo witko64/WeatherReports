@@ -11,10 +11,9 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.Iterator;
 
 
-public class Cities {
+public class CityList {
     static File myJsonFile;
     static Scanner myReader;
     static String jsonPath = "C:\\Users\\Witek\\IdeaProjects\\WeatherReports\\src\\main\\resources\\";
@@ -22,9 +21,10 @@ public class Cities {
     City city;
     List<City> cityList = null;
 
-    public Cities() {
+    public CityList() {
+        // Read table of cities from JSON file to JSON string
         try {
-            myJsonFile = new File(jsonPath+"cities.json");
+            myJsonFile = new File(jsonPath + "cities.json");
             myReader = new Scanner(myJsonFile);
             if (myReader.hasNextLine()) {
                 jsonString = myReader.nextLine();
@@ -34,11 +34,14 @@ public class Cities {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+
+
         ObjectMapper om = new ObjectMapper();
         try {
             // covert JSON table file to list Java object
             cityList = om.readValue(jsonString, new TypeReference<List<City>>(){});
-        } catch (JsonProcessingException e) {
+        }
+        catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }

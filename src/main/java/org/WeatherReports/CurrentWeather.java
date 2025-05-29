@@ -1,5 +1,7 @@
 package org.WeatherReports;
 
+import java.util.Date;
+
 public class CurrentWeather {
 
     public CurrentWeather() {
@@ -14,7 +16,7 @@ public class CurrentWeather {
     public JClouds clouds;
     public JRain rain;
     public JSnow snow;
-    public Long dt; // Time of data calculation, unix, UTC
+    public Date dt; // Time of data calculation, unix, UTC
     public JSys sys;
     public int timezone; //Shift in seconds from UTC
     public int id; //City ID. Please note that built-in geocoder functionality has been deprecated. Learn more here
@@ -61,7 +63,7 @@ public class CurrentWeather {
         public int id; //Internal parameter
         public String message; //Internal parameter
         public String country; //Country code (GB, JP etc.)
-        public Long sunrise; //Sunrise time, unix, UTC
-        public Long sunset; //time, unix, UTC
+        public Date sunrise; //Sunrise time, unix, UTC
+        public Date sunset; //time, unix, UTC
     }
 }

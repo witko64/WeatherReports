@@ -11,7 +11,7 @@ public class Meteo {
 
     public static void main(String[] args) throws IOException {
 //  Variables
-        Cities cities = new Cities();
+        CityList cities = new CityList();
         City city = new City();
         boolean goOn = true;
         Scanner scanner = new Scanner(System.in);
@@ -31,11 +31,11 @@ public class Meteo {
                     cities.printCities();
                     System.out.println("Podaj nazwę miasta");
                     myCity = scanner.nextLine();
-                    System.out.println(myCity);
                     city = cities.getCity(myCity);
+
                     weather.getWeather(city);
-                    weather.createWeatherReport();
-                    weather.createPDF(city.name);
+                    weather.writeWeatherReport();
+                    weather.createPDF();
                     weather.createXML();
                     weather.createJSON();
                 }
