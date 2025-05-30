@@ -10,6 +10,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,7 +66,23 @@ public class Weather {
         System.out.println("Wiatr z kierunku: " + currentWeather.wind.deg +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
         System.out.println("Widzialność: " + currentWeather);
     }
-    public void createPDF() {
+    public void createPDF() throws IOException {
+
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        PDFont font = PDType1Font.HELVETICA;
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+        //   PDType1Font pdType1Font = new PDType1Font();
+    //    contentStream.setFont(pdType1Font.HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.showText("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
+        contentStream.endText();
+        contentStream.close();
+
+        document.save(currentWeather.name + ".pdf");
+        document.close();
         System.out.println("createPDF");
     }
 
