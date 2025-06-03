@@ -41,11 +41,6 @@ public class CurrentWeather {
         public Double grnd_level; //Atmospheric pressure on the ground level, hPa
     }
 
-    public static class JWind {
-        public Double speed; //Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour
-        public int deg; //Wind direction, degrees (meteorological)
-        public Double gust; //Wind gust. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour
-    }
     public static class JClouds {
         public int all; //Cloudiness, %
     }

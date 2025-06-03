@@ -35,7 +35,6 @@ public class CityList {
             e.printStackTrace();
         }
 
-
         ObjectMapper om = new ObjectMapper();
         try {
             // covert JSON table file to list Java object
@@ -55,7 +54,6 @@ public class CityList {
         }
         if (!Objects.equals(city.name.toUpperCase(), myCity.toUpperCase())) {
             city = null;
-            System.out.println("Nie ma takiego miasta");
         }
         return city;
     }

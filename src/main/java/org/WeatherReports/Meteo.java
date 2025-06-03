@@ -11,8 +11,8 @@ public class Meteo {
 
     public static void main(String[] args) throws IOException {
 //  Variables
-        CityList cities = new CityList();
-        City city = new City();
+        CityList cityList = new CityList();
+        City city;
         boolean goOn = true;
         Scanner scanner = new Scanner(System.in);
         String cmd;
@@ -28,16 +28,20 @@ public class Meteo {
                     goOn = false;
                 }
                 else if (cmd.charAt(0) == 'P' || cmd.charAt(0) == 'p') {
-                    cities.printCities();
+                    cityList.printCities();
                     System.out.println("Podaj nazwę miasta");
                     myCity = scanner.nextLine();
-                    city = cities.getCity(myCity);
-
-                    weather.getWeather(city);
-                    weather.writeWeatherReport();
-                    weather.createPDF();
-                    weather.createXML();
-                    weather.createJSON();
+                    city = cityList.getCity(myCity);
+                    if (city==null) {
+                        System.out.println("Nie znalazłem :"+myCity);
+                    }
+                    else {
+                        weather.getWeather(city);
+                        weather.writeWeatherReport();
+                        weather.createPDF();
+                        weather.createXML();
+                        weather.createJSON();
+                    }
                 }
             }
         }

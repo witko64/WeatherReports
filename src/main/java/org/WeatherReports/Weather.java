@@ -3,6 +3,8 @@ package org.WeatherReports;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -10,18 +12,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
-import static org.apache.http.util.EntityUtils.*;
+import static org.apache.http.util.EntityUtils.consume;
 
 public class Weather {
 
@@ -63,27 +57,38 @@ public class Weather {
         System.out.println("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
         System.out.println("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa");
         System.out.println("Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C");
-        System.out.println("Wiatr z kierunku: " + currentWeather.wind.deg +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
-        System.out.println("Widzialność: " + currentWeather);
+        System.out.println("Wiatr z kierunku: " + currentWeather.wind.SetWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
+        System.out.println("Widzialność: " + currentWeather.visibility.toString()+" metrów");
     }
-    public void createPDF() throws IOException {
 
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
+    public void createPDF() {
+        try {
+           Document document = new Document();
+           PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + "2.pdf")));
+           document.open();
+           Font f = new Font();
+           f.setStyle(Font.BOLD);
+           f.setSize(16);
+           Paragraph p = new Paragraph();
+           p.setFont(f);
+           p.add("Prognoza pogody data: " + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name+"\n");
+           p.setAlignment(Element.ALIGN_CENTER);
+           document.add(p);
+           f.setStyle(Font.ITALIC);
+           f.setSize(12);
+           Paragraph p2 = new Paragraph();
+           p2.setFont(f);
+           p2.add("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa\n" +
+           "Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C\n" +
+           "Wiatr z kierunku: " + currentWeather.wind.SetWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s\n" +
+           "Widzialność: " + currentWeather.visibility.toString()+" metrów\n");
 
-        PDFont font = PDType1Font.HELVETICA;
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        //   PDType1Font pdType1Font = new PDType1Font();
-    //    contentStream.setFont(pdType1Font.HELVETICA, 12);
-        contentStream.beginText();
-        contentStream.showText("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
-        contentStream.endText();
-        contentStream.close();
-
-        document.save(currentWeather.name + ".pdf");
-        document.close();
-        System.out.println("createPDF");
+           document.add(p2);
+           document.close();
+           System.out.println("Done");
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createXML() throws JsonProcessingException {
@@ -95,12 +100,20 @@ public class Weather {
             File xmlFile = new File(currentWeather.name + ".xml");
             xmlMapper.writeValue(xmlFile, currentWeather);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Blad tworzenia pliku pdf.");
         }
     }
 
 
     public void createJSON(){
         System.out.println("createJSON");
+        try {
+            FileWriter writer = new FileWriter(currentWeather.name + ".json");
+            writer.write(weatherJsonString);
+            writer.close();
+            System.out.println("OK, utworzono plik JSON");
+        } catch (IOException e) {
+            System.out.println("Blad zapisu JSON.");
+        }
     }
 }
