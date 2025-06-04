@@ -17,17 +17,18 @@ public class Meteo {
         Scanner scanner = new Scanner(System.in);
         String cmd;
         String myCity;
+        String saveAs;
         MeteoConfig meteoConfig = new MeteoConfig();
         Weather weather = new Weather();
 
         while (goOn) {
             System.out.println("P-podaj miasto, Z-zakończ");
-            cmd = scanner.nextLine();
+            cmd = scanner.nextLine().toUpperCase();
             if (!cmd.isEmpty()) {
-                if (cmd.charAt(0) == 'Z' || cmd.charAt(0) == 'z') {
+                if (cmd.charAt(0) == 'Z') {
                     goOn = false;
                 }
-                else if (cmd.charAt(0) == 'P' || cmd.charAt(0) == 'p') {
+                else if (cmd.charAt(0) == 'P') {
                     cityList.printCities();
                     System.out.println("Podaj nazwę miasta");
                     myCity = scanner.nextLine();
@@ -38,9 +39,24 @@ public class Meteo {
                     else {
                         weather.getWeather(city);
                         weather.writeWeatherReport();
-                        weather.createPDF();
-                        weather.createXML();
-                        weather.createJSON();
+                        System.out.println("\nP-PDF J-JSON X-XML");
+                        saveAs = scanner.nextLine().toUpperCase();
+                        if (!saveAs.isEmpty()) {
+                            switch (saveAs) {
+                                case "P":
+                                    weather.createPDF();
+
+                                case "J":
+                                    weather.createJSON();
+
+                                case "X":
+                                    weather.createXML();
+
+                                default:
+                                    System.out.println("\n");
+                                    break;
+                            }
+                        }
                     }
                 }
             }

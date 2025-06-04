@@ -19,9 +19,8 @@ import static org.apache.http.util.EntityUtils.consume;
 
 public class Weather {
 
-    CurrentWeather currentWeather;
-
-    String weatherJsonString = "";
+    public CurrentWeather currentWeather;
+    private String weatherJsonString = "";
 
     public Weather() {
     }
@@ -39,7 +38,6 @@ public class Weather {
             InputStream myStream = entity.getContent();
             weatherJsonString = EntityUtils.toString(entity);     // return it as a String
             consume(entity);
-
             ObjectMapper om = new ObjectMapper();
             try {
                 // covert JSON string to list Java object
@@ -57,14 +55,14 @@ public class Weather {
         System.out.println("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
         System.out.println("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa");
         System.out.println("Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C");
-        System.out.println("Wiatr z kierunku: " + currentWeather.wind.SetWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
+        System.out.println("Wiatr z kierunku: " + currentWeather.wind.getWindDirectionString()  +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
         System.out.println("Widzialność: " + currentWeather.visibility.toString()+" metrów");
     }
 
     public void createPDF() {
         try {
            Document document = new Document();
-           PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + "2.pdf")));
+           PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + ".pdf")));
            document.open();
            Font f = new Font();
            f.setStyle(Font.BOLD);
@@ -80,40 +78,39 @@ public class Weather {
            p2.setFont(f);
            p2.add("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa\n" +
            "Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C\n" +
-           "Wiatr z kierunku: " + currentWeather.wind.SetWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s\n" +
+           "Wiatr z kierunku: " + currentWeather.wind.getWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s\n" +
            "Widzialność: " + currentWeather.visibility.toString()+" metrów\n");
 
            document.add(p2);
            document.close();
-           System.out.println("Done");
+           System.out.println("OK, utworzono plik " + currentWeather+".pdf");
         } catch (DocumentException | IOException e) {
-            e.printStackTrace();
+            System.out.println("Blad tworzenia pliku PDF.");
+            //e.printStackTrace();
         }
     }
 
     public void createXML() throws JsonProcessingException {
-        System.out.println("createXML");
         XmlMapper xmlMapper = new XmlMapper();
         String xml = xmlMapper.writeValueAsString(currentWeather);
-        System.out.println(xml);
         try {
             File xmlFile = new File(currentWeather.name + ".xml");
             xmlMapper.writeValue(xmlFile, currentWeather);
+            System.out.println("OK, utworzono plik "+currentWeather.name+".xml");
         } catch (IOException e) {
-            System.out.println("Blad tworzenia pliku pdf.");
+            System.out.println("Blad tworzenia pliku XML.");
         }
     }
 
-
     public void createJSON(){
-        System.out.println("createJSON");
         try {
             FileWriter writer = new FileWriter(currentWeather.name + ".json");
             writer.write(weatherJsonString);
             writer.close();
-            System.out.println("OK, utworzono plik JSON");
+            System.out.println("OK, utworzono plik "+ currentWeather.name + ".json");
         } catch (IOException e) {
             System.out.println("Blad zapisu JSON.");
         }
     }
+
 }
