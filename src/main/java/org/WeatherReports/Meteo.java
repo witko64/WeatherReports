@@ -3,8 +3,6 @@ package org.WeatherReports;
 import java.io.IOException;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Meteo {
 
 //    protected static String PATH_TO_JSON = "c:\\cities.json";
@@ -41,26 +39,24 @@ public class Meteo {
                         weather.writeWeatherReport();
                         System.out.println("\nP-PDF J-JSON X-XML");
                         saveAs = scanner.nextLine().toUpperCase();
-                        if (!saveAs.isEmpty()) {
-                            switch (saveAs) {
-                                case "P":
-                                    weather.createPDF();
-
-                                case "J":
-                                    weather.createJSON();
-
-                                case "X":
-                                    weather.createXML();
-
-                                default:
-                                    System.out.println("\n");
-                                    break;
-                            }
+                        switch (saveAs.charAt(0)) {
+                            case 'P':
+                                weather.createPDF();
+                                break;
+                            case 'J':
+                                weather.createJSON();
+                                break;
+                            case 'X':
+                                weather.createXML();
+                                break;
+                            default:
+                                System.out.println("\n");
+                                break;
                         }
                     }
                 }
             }
         }
-        System.out.println("Dzięki do zobaczenia");
+        System.out.println("Dzięki, do zobaczenia");
     }
 }

@@ -16,7 +16,7 @@ public class CurrentWeather {
     public JClouds clouds;
     public JRain rain;
     public JSnow snow;
-    public Date dt; // Time of data calculation, unix, UTC
+    public Long dt; // Time of data calculation, unix, UTC
     public JSys sys;
     public int timezone; //Shift in seconds from UTC
     public int id; //City ID. Please note that built-in geocoder functionality has been deprecated. Learn more here

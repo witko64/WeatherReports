@@ -14,6 +14,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 import static org.apache.http.util.EntityUtils.consume;
 
@@ -42,6 +44,7 @@ public class Weather {
             try {
                 // covert JSON string to list Java object
                 currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
+                checkWeatherData();
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
@@ -49,9 +52,36 @@ public class Weather {
             throw new RuntimeException(e);
         }
     }
+    private void checkWeatherData() {
+        if (currentWeather.dt == null) {
+           currentWeather.dt = 0L;
+        }
+        if (currentWeather.name == null) {
+            currentWeather.name = "nierozpoznana miejscowość";
+        }
+        if (currentWeather.main.pressure == null) {
+            currentWeather.main.pressure = 0L;
+        }
+        if (currentWeather.main.temp == null) {
+            currentWeather.main.temp = 0L;
+        }
+        if (currentWeather.main.feels_like == null) {
+            currentWeather.main.feels_like = 0L;
+        }
+        if (currentWeather.wind.speed == null) {
+            currentWeather.wind.speed = 0.0;
+        }
+        if (currentWeather.wind.gust == null) {
+            currentWeather.wind.gust = 0.0;
+        }
+        if (currentWeather.visibility == null) {
+           currentWeather.visibility = 0.0;
+        }
+    }
 
     public void writeWeatherReport() {
-        System.out.println("");
+        Date date =  new Date(currentWeather.dt);
+        System.out.println("\n"+  date.toString());
         System.out.println("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
         System.out.println("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa");
         System.out.println("Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C");
