@@ -80,9 +80,8 @@ public class Weather {
     }
 
     public void writeWeatherReport() {
-        Date date =  new Date(currentWeather.dt);
-        System.out.println("\n"+  date.toString());
-        System.out.println("Prognoza pogody data:" + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name);
+        Date date =  new Date((currentWeather.dt+currentWeather.timezone)*1000);
+        System.out.println("Prognoza pogody data:" + date.toString() +" miejscowość  " + currentWeather.name);
         System.out.println("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa");
         System.out.println("Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C");
         System.out.println("Wiatr z kierunku: " + currentWeather.wind.getWindDirectionString()  +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
@@ -91,29 +90,30 @@ public class Weather {
 
     public void createPDF() {
         try {
-           Document document = new Document();
-           PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + ".pdf")));
-           document.open();
-           Font f = new Font();
-           f.setStyle(Font.BOLD);
-           f.setSize(16);
-           Paragraph p = new Paragraph();
-           p.setFont(f);
-           p.add("Prognoza pogody data: " + currentWeather.dt.toString() +" miejscowość  " + currentWeather.name+"\n");
-           p.setAlignment(Element.ALIGN_CENTER);
-           document.add(p);
-           f.setStyle(Font.ITALIC);
-           f.setSize(12);
-           Paragraph p2 = new Paragraph();
-           p2.setFont(f);
-           p2.add("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa\n" +
-           "Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C\n" +
-           "Wiatr z kierunku: " + currentWeather.wind.getWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s\n" +
-           "Widzialność: " + currentWeather.visibility.toString()+" metrów\n");
+            Date date =  new Date((currentWeather.dt+currentWeather.timezone)*1000);
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + ".pdf")));
+            document.open();
+            Font f = new Font();
+            f.setStyle(Font.BOLD);
+            f.setSize(16);
+            Paragraph p = new Paragraph();
+            p.setFont(f);
+            p.add("Prognoza pogody data: " + date.toString() +" miejscowość  " + currentWeather.name+"\n");
+            p.setAlignment(Element.ALIGN_CENTER);
+            document.add(p);
+            f.setStyle(Font.ITALIC);
+            f.setSize(12);
+            Paragraph p2 = new Paragraph();
+            p2.setFont(f);
+            p2.add("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa\n" +
+            "Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C\n" +
+            "Wiatr z kierunku: " + currentWeather.wind.getWindDirectionString() +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s\n" +
+            "Widzialność: " + currentWeather.visibility.toString()+" metrów\n");
 
-           document.add(p2);
-           document.close();
-           System.out.println("OK, utworzono plik " + currentWeather+".pdf");
+            document.add(p2);
+            document.close();
+            System.out.println("OK, utworzono plik " + currentWeather.name+".pdf");
         } catch (DocumentException | IOException e) {
             System.out.println("Blad tworzenia pliku PDF.");
             //e.printStackTrace();
