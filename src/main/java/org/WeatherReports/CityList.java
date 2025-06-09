@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class CityList {
     static File myJsonFile;
     static Scanner myReader;
-    static String jsonPath = "C:\\Users\\Witek\\IdeaProjects\\WeatherReports\\src\\main\\resources\\";
+    static String jsonPath = System.getenv("HOMEPATH") + "\\IdeaProjects\\WeatherReports\\src\\main\\resources\\";
     static String jsonString = "";
     City city;
     List<City> cityList = null;

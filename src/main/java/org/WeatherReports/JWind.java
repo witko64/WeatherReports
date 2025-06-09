@@ -14,7 +14,7 @@ public class JWind {
             "W", "WbN", "WNW", "NWbW", "NW", "WNbNE", "NNW", "NbW", "N"};
 
     public int getWindDirection(){
-        return (int) (deg / 11.25);
+        return (int) ((deg + 5.625) / 11.25);
     }
 
     public String getWindDirectionString () {
