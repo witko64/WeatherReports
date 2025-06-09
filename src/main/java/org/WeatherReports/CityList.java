@@ -31,8 +31,7 @@ public class CityList {
             }
         }
         catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println("Błąd odczytu listy miast.");
         }
 
         ObjectMapper om = new ObjectMapper();
@@ -41,7 +40,7 @@ public class CityList {
             cityList = om.readValue(jsonString, new TypeReference<List<City>>(){});
         }
         catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            System.out.println("Nie można utworzyć listy miast.");;
         }
     }
 

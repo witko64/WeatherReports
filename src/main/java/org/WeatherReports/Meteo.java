@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Meteo {
 
-//    protected static String PATH_TO_JSON = "c:\\cities.json";
+
 
     public static void main(String[] args) throws IOException {
 //  Variables

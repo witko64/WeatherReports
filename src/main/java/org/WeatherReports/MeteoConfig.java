@@ -40,7 +40,7 @@ public class MeteoConfig {
                 defaultUnits = myReader.nextLine();
             }}
         catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("Błąd otwarcia lub odczytu konfiguracji.");
         }
     }
 }

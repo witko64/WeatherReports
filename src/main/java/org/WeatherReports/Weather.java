@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -14,7 +15,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 import static org.apache.http.util.EntityUtils.consume;
@@ -46,10 +46,10 @@ public class Weather {
                 currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
                 checkWeatherData();
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                System.out.println("Błąd przetwarzania prognozy pogody JSON -> objekt");
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Błąd obsługi żądania rest");
         }
     }
     private void checkWeatherData() {
@@ -94,7 +94,10 @@ public class Weather {
             Document document = new Document();
             PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + ".pdf")));
             document.open();
-            Font f = new Font();
+
+            Font f = FontFactory.getFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED,8);
+            //Font f = FontFactory.getFont("Arial", "UTF-8", Font.NORMAL);
+
             f.setStyle(Font.BOLD);
             f.setSize(16);
             Paragraph p = new Paragraph();
@@ -116,7 +119,6 @@ public class Weather {
             System.out.println("OK, utworzono plik " + currentWeather.name+".pdf");
         } catch (DocumentException | IOException e) {
             System.out.println("Blad tworzenia pliku PDF.");
-            //e.printStackTrace();
         }
     }
 
@@ -142,5 +144,4 @@ public class Weather {
             System.out.println("Blad zapisu JSON.");
         }
     }
-
 }
