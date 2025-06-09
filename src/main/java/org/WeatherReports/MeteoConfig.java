@@ -41,7 +41,6 @@ public class MeteoConfig {
             }}
         catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
-            e.printStackTrace();
         }
     }
 }
