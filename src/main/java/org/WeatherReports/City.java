@@ -1,4 +1,4 @@
-// Klasa City: miasto dla którego będziemy wyszukiwac prognozę pogody, elementu zbioru Cities
+// Klasa City: miasto dla którego będziemy wyszukiwac prognozę pogody, element CityList
 
 package org.WeatherReports;
 

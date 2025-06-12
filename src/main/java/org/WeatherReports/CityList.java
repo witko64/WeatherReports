@@ -1,4 +1,4 @@
-// Klasa Cities: lista miast - "baza danych miast dla których będziemy wyszukiwac prognozę pogody.
+// Klasa CityList: "baza danych miast, dla których będziemy wyszukiwac prognozę pogody.
 
 package org.WeatherReports;
 //import java.lang;

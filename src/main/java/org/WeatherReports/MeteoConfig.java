@@ -12,7 +12,6 @@ public class MeteoConfig {
     public static String defaultLang;
     public static String defaultUnits;
 
-
     static File myConfig;
     static Scanner myReader;
 

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,18 +26,14 @@ public class Weather {
     public Weather() {
     }
 
-    public void getWeather(City city) throws IOException {
-
-        String restCMD = MeteoConfig.restURL + "lat=" + Double.toString(city.coord.lat) + "&lon=" + Double.toString(city.coord.lon) + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet(restCMD);
-
-        try (CloseableHttpResponse response = httpClient.execute(request)){
+    public void getWeather(City city) {
+        String restCMD = MeteoConfig.restURL + "lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet request = new HttpGet(restCMD);
+            CloseableHttpResponse response = httpClient.execute(request);
             HttpEntity entity = response.getEntity();
-            Header headers = entity.getContentType();
-            InputStream myStream = entity.getContent();
-            weatherJsonString = EntityUtils.toString(entity);     // return it as a String
+            weatherJsonString = EntityUtils.toString(entity);
             consume(entity);
             ObjectMapper om = new ObjectMapper();
             try {
@@ -46,7 +41,7 @@ public class Weather {
                 currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
                 checkWeatherData();
             } catch (JsonProcessingException e) {
-                System.out.println("Błąd przetwarzania prognozy pogody JSON -> objekt");
+                System.out.println("Błąd przetwarzania prognozy pogody JSON -> obiekt");
             }
         } catch (IOException e) {
             System.out.println("Błąd obsługi żądania rest");
@@ -80,8 +75,9 @@ public class Weather {
     }
 
     public void writeWeatherReport() {
-        Date date =  new Date((currentWeather.dt+currentWeather.timezone)*1000);
-        System.out.println("Prognoza pogody data:" + date.toString() +" miejscowość  " + currentWeather.name);
+        //Date date =  new Date((currentWeather.dt+currentWeather.timezone)*1000);
+        Date date =  new Date(currentWeather.dt*1000);
+        System.out.println("Prognoza pogody data:" + date +" miejscowość  " + currentWeather.name);
         System.out.println("Ciśnienie atmosferyczne: "+ currentWeather.main.pressure.toString() +"hPa");
         System.out.println("Temperatura: " + currentWeather.main.temp.toString() + "C  odczuwalna " + currentWeather.main.feels_like.toString()+"C");
         System.out.println("Wiatr z kierunku: " + currentWeather.wind.getWindDirectionString()  +" "+ currentWeather.wind.speed.toString() + "m/s w porywach "+currentWeather.wind.gust.toString() + "m/s");
@@ -92,7 +88,8 @@ public class Weather {
         try {
             Date date =  new Date((currentWeather.dt+currentWeather.timezone)*1000);
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(new File(currentWeather.name + ".pdf")));
+            File file = new File(currentWeather.name + ".pdf");
+            PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
 
             Font f = FontFactory.getFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED,8);
@@ -102,7 +99,7 @@ public class Weather {
             f.setSize(16);
             Paragraph p = new Paragraph();
             p.setFont(f);
-            p.add("Prognoza pogody data: " + date.toString() +" miejscowość  " + currentWeather.name+"\n");
+            p.add("Prognoza pogody data: " + date +" miejscowość  " + currentWeather.name+"\n");
             p.setAlignment(Element.ALIGN_CENTER);
             document.add(p);
             f.setStyle(Font.ITALIC);
@@ -118,19 +115,18 @@ public class Weather {
             document.close();
             System.out.println("OK, utworzono plik " + currentWeather.name+".pdf");
         } catch (DocumentException | IOException e) {
-            System.out.println("Blad tworzenia pliku PDF.");
+            System.out.println("Błąd tworzenia pliku PDF.");
         }
     }
 
-    public void createXML() throws JsonProcessingException {
+    public void createXML() {
         XmlMapper xmlMapper = new XmlMapper();
-        String xml = xmlMapper.writeValueAsString(currentWeather);
         try {
             File xmlFile = new File(currentWeather.name + ".xml");
             xmlMapper.writeValue(xmlFile, currentWeather);
             System.out.println("OK, utworzono plik "+currentWeather.name+".xml");
         } catch (IOException e) {
-            System.out.println("Blad tworzenia pliku XML.");
+            System.out.println("Błąd tworzenia pliku XML.");
         }
     }
 
@@ -141,7 +137,7 @@ public class Weather {
             writer.close();
             System.out.println("OK, utworzono plik "+ currentWeather.name + ".json");
         } catch (IOException e) {
-            System.out.println("Blad zapisu JSON.");
+            System.out.println("Błąd zapisu JSON.");
         }
     }
 }

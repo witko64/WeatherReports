@@ -1,3 +1,4 @@
+//Klasa Coord: współrzędne , długość, szerokość geograficzna
 package org.WeatherReports;
 
 public class Coord {

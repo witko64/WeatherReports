@@ -1,8 +1,8 @@
 package org.WeatherReports;
 
-public class JWind {
+public class Wind {
 
-    public JWind() {
+    public Wind() {
     }
 
     public Double speed; //Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour
