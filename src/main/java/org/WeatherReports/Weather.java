@@ -25,31 +25,9 @@ public class Weather {
 
     public Weather() {
     }
-
-    public void getWeather(City city) {
-        String restCMD = MeteoConfig.restURL + "lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
-        try {
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet request = new HttpGet(restCMD);
-            CloseableHttpResponse response = httpClient.execute(request);
-            HttpEntity entity = response.getEntity();
-            weatherJsonString = EntityUtils.toString(entity);
-            consume(entity);
-            ObjectMapper om = new ObjectMapper();
-            try {
-                // covert JSON string to list Java object
-                currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
-                checkWeatherData();
-            } catch (JsonProcessingException e) {
-                System.out.println("Błąd przetwarzania prognozy pogody JSON -> obiekt");
-            }
-        } catch (IOException e) {
-            System.out.println("Błąd obsługi żądania rest");
-        }
-    }
     private void checkWeatherData() {
         if (currentWeather.dt == null) {
-           currentWeather.dt = 0L;
+            currentWeather.dt = 0L;
         }
         if (currentWeather.name == null) {
             currentWeather.name = "nierozpoznana miejscowość";
@@ -70,7 +48,33 @@ public class Weather {
             currentWeather.wind.gust = 0.0;
         }
         if (currentWeather.visibility == null) {
-           currentWeather.visibility = 0.0;
+            currentWeather.visibility = 0.0;
+        }
+    }
+
+    private String setRestCmd(Coord coord) {
+       return MeteoConfig.restURL + "lat=" + coord.lat + "&lon=" + coord.lon + "&" + MeteoConfig.defaultUnits +"&"+MeteoConfig.defaultLang + "&appid=" + MeteoConfig.appID;
+    }
+
+    public void getWeather(City city) {
+        String restCMD = setRestCmd(city.coord);
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet request = new HttpGet(restCMD);
+            CloseableHttpResponse response = httpClient.execute(request);
+            HttpEntity entity = response.getEntity();
+            weatherJsonString = EntityUtils.toString(entity);
+            consume(entity);
+            ObjectMapper om = new ObjectMapper();
+            try {
+                // covert JSON string to list Java object
+                currentWeather = om.readValue(weatherJsonString, CurrentWeather.class);
+                checkWeatherData();
+            } catch (JsonProcessingException e) {
+                System.out.println("Błąd przetwarzania prognozy pogody JSON -> obiekt");
+            }
+        } catch (IOException e) {
+            System.out.println("Błąd obsługi żądania rest");
         }
     }
 
